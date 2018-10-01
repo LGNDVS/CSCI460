@@ -1,9 +1,12 @@
 package assignOne; 
+import java.io.*;
 import java.text.DecimalFormat;
 import java.util.*;
 
 
-public class Driver {
+public class Davis_Driver_1 {
+	
+
 	
 	// Student Number = 02170066  
 	// 0066 % 3 = 0
@@ -11,18 +14,18 @@ public class Driver {
 	public int total_processors = 2; 
 	
 	//Creation of the two processors from my student ID
-	public static Processor pZero = new Processor();
-	public static Processor pOne = new Processor();
+	public static Davis_ProcessorClass_1 pZero = new Davis_ProcessorClass_1();
+	public static Davis_ProcessorClass_1 pOne = new Davis_ProcessorClass_1();
 	
 	//variable tracks the last processor used
 	public static int last_processor = 0;
 
 	
-	public static void main(String[] args) 
+	public static void main(String[] args) throws IOException 
 	{
 		
 		//Initializing RandomJobs array 
-		Job[] RandomJobs = new Job[100];		
+		Davis_JobClass_1[] RandomJobs = new Davis_JobClass_1[100];		
 		
 		//PART b.1, Running program 100 times and calculating statistics 
 		int[] circularTT = new int[100];
@@ -43,7 +46,7 @@ public class Driver {
 				int low = 1;
 				int high = 501;
 				int randomProcessingTime = r.nextInt(high - low) + low;
-				RandomJobs[j] = new Job(j, randomProcessingTime);
+				RandomJobs[j] = new Davis_JobClass_1(j, randomProcessingTime);
 						
 			}
 			
@@ -66,7 +69,7 @@ public class Driver {
 				int low = 1;
 				int high = 501;
 				int randomProcessingTime = r.nextInt(high - low) + low;
-				RandomJobs[j] = new Job(j, randomProcessingTime);
+				RandomJobs[j] = new Davis_JobClass_1(j, randomProcessingTime);
 						
 			}
 			// bestCalling CIRCULAR method on a set of RandomJobs
@@ -77,60 +80,74 @@ public class Driver {
 		
 		
 		//initializing testJobs array with the given data table from assignment
-		Job[] testJobs = new Job[12];
-		testJobs[0] = new Job(4,9);
-		testJobs[1] = new Job(15,2);
-		testJobs[2] = new Job(18,16);
-		testJobs[3] = new Job(20,3);
-		testJobs[4] = new Job(26,29);
-		testJobs[5] = new Job(29,198);
-		testJobs[6] = new Job(35,7);
-		testJobs[7] = new Job(45,170);
-		testJobs[8] = new Job(57,180);
-		testJobs[9] = new Job(83,178);
-		testJobs[10] = new Job(88,73);
-		testJobs[11] = new Job(95,8);
+		Davis_JobClass_1[] testJobs = new Davis_JobClass_1[12];
+		testJobs[0] = new Davis_JobClass_1(4,9);
+		testJobs[1] = new Davis_JobClass_1(15,2);
+		testJobs[2] = new Davis_JobClass_1(18,16);
+		testJobs[3] = new Davis_JobClass_1(20,3);
+		testJobs[4] = new Davis_JobClass_1(26,29);
+		testJobs[5] = new Davis_JobClass_1(29,198);
+		testJobs[6] = new Davis_JobClass_1(35,7);
+		testJobs[7] = new Davis_JobClass_1(45,170);
+		testJobs[8] = new Davis_JobClass_1(57,180);
+		testJobs[9] = new Davis_JobClass_1(83,178);
+		testJobs[10] = new Davis_JobClass_1(88,73);
+		testJobs[11] = new Davis_JobClass_1(95,8);
 		
 		// Printing solutions to questions from assignment
-		System.out.println("----------\n" + "PART a" + "\n----------");
-		System.out.println("Total Number of Processors = 2" + "\n");
+		PrintWriter out = new PrintWriter(new FileWriter("C:\\Miscellaneous\\output\\Davis-1.output")); 
+		
+		out.println("----------");
+		out.println("PART a");
+		out.println("----------");
+		out.println("Total Number of Processors = 2");
+		out.println();
 		
 		// Only printing 3 decimal places
 		DecimalFormat df = new DecimalFormat();
 		df.setMaximumFractionDigits(3);
 		
-		System.out.println("----------\n" + "PART b.1" + "\n----------");
-		System.out.println("100 Random Job Circular Turnaround Time Statistics: ");
-		System.out.println("Minimum --> "+ min(circularTT) + " ms");
-		System.out.println("Maximum --> "+ max(circularTT) + " ms");
-		System.out.println("Average --> " + mean(circularTT) + " ms");
+		out.println("----------");
+		out.println("PART b.1");
+		out.println("----------");
+		out.println("100 Random Job Circular Turnaround Time Statistics: ");
+		out.println("Minimum --> "+ min(circularTT) + " ms");
+		out.println("Maximum --> "+ max(circularTT) + " ms");
+		out.println("Average --> " + mean(circularTT) + " ms");
 		
 		
 		// Printing stddev in only 3 decimal places
-		System.out.print("Standard Deviation --> ");
-		System.out.println(df.format(stddev(circularTT)) + " ms\n" );
+		out.print("Standard Deviation --> ");
+		out.println(df.format(stddev(circularTT)) + " ms" );
+		out.println();
+		
+		out.println("----------");
+		out.println("PART b.2");
+		out.println("----------");
+		out.println("Sequence of 12 Test Jobs - CIRCULAR Turnaround Time:  " + CIRCULAR(testJobs) + " ms");
+		out.println();
 		
 		
-		System.out.println("----------\n" + "PART b.2" + "\n----------");
-		System.out.println("Sequence of 12 Test Jobs - CIRCULAR Turnaround Time:  " + CIRCULAR(testJobs) + " ms\n");
+		out.println("----------");
+		out.println("PART c");
+		out.println("----------");
+		out.println("Sequence of 12 Test Jobs - bestCIRCULAR Turnaround Time: " + bestCIRCULAR(testJobs));
+		out.println();
 		
-		
-		System.out.println("----------\n" + "PART c" + "\n----------");
-		System.out.println("Sequence of 12 Test Jobs - bestCIRCULAR Turnaround Time: " + bestCIRCULAR(testJobs) + " ms\n");
-		
-		System.out.println("100 Random Job bestCircular Turnaround Time Statistics: ");
-		System.out.println("Minimum --> "+ min(bestCircularTT) + " ms");
-		System.out.println("Maximum --> "+ max(bestCircularTT) + " ms");
-		System.out.println("Average --> " + mean(bestCircularTT) + " ms");
+		out.println("100 Random Job bestCircular Turnaround Time Statistics: ");
+		out.println("Minimum --> "+ min(bestCircularTT) + " ms");
+		out.println("Maximum --> "+ max(bestCircularTT) + " ms");
+		out.println("Average --> " + mean(bestCircularTT) + " ms");
 		
 		// Printing stddev in only 3 decimal places
-		System.out.print("Standard Deviation --> ");
-		System.out.println(df.format(stddev(bestCircularTT)) + " ms");
+		out.print("Standard Deviation --> ");
+		out.println(df.format(stddev(bestCircularTT)) + " ms");
 		
+		out.close();
 	}
 	
 	
-	public static int CIRCULAR(Job[] jobArray)
+	public static int CIRCULAR(Davis_JobClass_1[] jobArray)
 	{
 		//making sure that the total processing time is reset after every CIRCULAR method call
 		pZero.ProcessorTotalTime = 0;
@@ -159,7 +176,7 @@ public class Driver {
 		
 	}
 	
-	public static int bestCIRCULAR(Job[] jobArray) 
+	public static int bestCIRCULAR(Davis_JobClass_1[] jobArray) 
 	{
 		//making sure that the total processing time is reset after every CIRCULAR method call
 		pZero.ProcessorTotalTime = 0;
@@ -209,7 +226,7 @@ public class Driver {
 		
 	}
 	
-	public static int findOTT(int timeZero, int timeOne, Job[] jobArray) 
+	public static int findOTT(int timeZero, int timeOne, Davis_JobClass_1[] jobArray) 
 	{
 		// initializing overalTT variable to 0 
 		int overallTT = 0;
@@ -217,12 +234,12 @@ public class Driver {
 		// if else statement determining which processor has greater processing time (Used in calculating OTT)
 		if(timeZero > timeOne) 
 		{
-			overallTT = timeZero + jobArray[0].arrival_time;			
+			overallTT = timeZero;			
 		}
 		
 		else
 		{
-			overallTT = timeOne + jobArray[0].arrival_time;			
+			overallTT = timeOne;			
 		}
 		
 		return overallTT;
@@ -281,4 +298,6 @@ public class Driver {
 	public static double stddev(int[] a) {
 		return Math.sqrt(var(a));
 	}
+	
+
 }

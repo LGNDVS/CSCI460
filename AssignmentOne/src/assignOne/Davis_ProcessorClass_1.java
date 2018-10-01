@@ -1,10 +1,10 @@
 package assignOne;
 
-public class Processor {
-
+public class Davis_ProcessorClass_1 {
+	
 	public int ProcessorTotalTime;
 	
-	public Processor() 
+	public Davis_ProcessorClass_1() 
 	{
 		// Tracks the total time a processor has been running
 		ProcessorTotalTime = 0;
