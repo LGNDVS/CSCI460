@@ -6,6 +6,7 @@ public class Processor {
 	
 	public Processor() 
 	{
+		// Tracks the total time a processor has been running
 		ProcessorTotalTime = 0;
 	}
 	

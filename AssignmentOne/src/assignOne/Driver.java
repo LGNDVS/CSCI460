@@ -28,6 +28,7 @@ public class Driver {
 		int[] circularTT = new int[100];
 		int[] bestCircularTT = new int[100];
 		
+		
 		/*
 		 * 	bestCircular RandomJob Simulation 
 		 */
@@ -37,6 +38,7 @@ public class Driver {
 			// Filling RandomJobs array with new random values through each iteration of the program call
 			for(int j = 0; j < RandomJobs.length; j++) 
 			{
+				// Setting random processing times between 1 - 500
 				Random r = new Random();
 				int low = 1;
 				int high = 501;
@@ -45,9 +47,11 @@ public class Driver {
 						
 			}
 			
+			// Calling CIRCULAR method on a set of RandomJobs
 			circularTT[i] = CIRCULAR(RandomJobs);
 
 		}
+		
 		
 		/*
 		 * 	bestCircular RandomJob Simulation 
@@ -65,7 +69,7 @@ public class Driver {
 				RandomJobs[j] = new Job(j, randomProcessingTime);
 						
 			}
-			
+			// bestCalling CIRCULAR method on a set of RandomJobs
 			bestCircularTT[i] = bestCIRCULAR(RandomJobs);
 
 		}
@@ -124,6 +128,7 @@ public class Driver {
 		System.out.println(df.format(stddev(bestCircularTT)) + " ms");
 		
 	}
+	
 	
 	public static int CIRCULAR(Job[] jobArray)
 	{
@@ -206,7 +211,10 @@ public class Driver {
 	
 	public static int findOTT(int timeZero, int timeOne, Job[] jobArray) 
 	{
+		// initializing overalTT variable to 0 
 		int overallTT = 0;
+		
+		// if else statement determining which processor has greater processing time (Used in calculating OTT)
 		if(timeZero > timeOne) 
 		{
 			overallTT = timeZero + jobArray[0].arrival_time;			
