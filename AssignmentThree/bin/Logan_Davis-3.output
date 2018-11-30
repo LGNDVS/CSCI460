@@ -1,0 +1,27 @@
+--- Set Jobs ---
+[1{3}, 3{2}, 6{3}, 8{1}, 10{2}, 12{3}, 26{1}]
+
+--- Random Jobs ---
+Before sorting: [23{3}, 23{1}, 16{1}, 4{3}, 19{2}, 14{2}, 30{3}, 25{3}, 11{2}, 24{3}]
+After sorting:  [4{3}, 11{2}, 14{2}, 16{1}, 19{2}, 23{1}, 23{3}, 24{3}, 25{3}, 30{3}]
+
+--- Set Jobs ---
+time 1, {T3}33{T3}
+time 3, {T2}NNNNNNNNNN{T2}
+time 13, {T3}333{T3}
+time 16, {T1}111{T1}
+time 19, {T2}NNNNNNNNNN{T2}
+time 29, {T3}333{T3}
+time 32, {T1}111{T1}
+
+--- Random Jobs ---
+time 4, {T3}333{T3}
+time 11, {T2}NNNNNNNNNN{T2}
+time 21, {T2}{T2}
+time 21, {T1}111{T1}
+time 24, {T2}{T2}
+time 24, {T1}111{T1}
+time 27, {T3}333{T3}
+time 30, {T3}333{T3}
+time 33, {T3}333{T3}
+time 36, {T3}333{T3}

@@ -1,21 +1,23 @@
 public class Job
 {
-    private int priority;
+    private int priorityLevel;
     private String name;
 
+    // constructor
     public Job(int priority, String name)
     {
-        this.priority = priority;
+        priorityLevel = priority;
         this.name = name;
-    }
-
-    public int getPriority()
-    {
-        return this.priority;
     }
 
     public String getName()
     {
         return this.name;
     }
+
+    public int getPriority()
+    {
+        return this.priorityLevel;
+    }
+
 }

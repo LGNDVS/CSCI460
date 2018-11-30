@@ -1,24 +1,25 @@
 import java.util.*;
 
-public class Driver 
-{
-    //Written by John Bemis for CSCI 460 at Montana State University
-    
-    //The output will sometimes show a job's name, but not the buffer. This
-    //is because the job after it preempts it, and that job's arrival time is
-    //sooner than the current time, meaning that the job that was preempted
-    //had no time do anything. 
+/*
+ * Logan Davis
+ * CSCI460 - Assignment 3
+ * 11/29/2018
+*/
 
-    //buffer for part b
+public class Driver
+{
+    // declaration of buffer used in part b
     private static int[] buffer = new int[3];
-    //random job requests
+
+    // random job requests
     private static Request[] requests = new Request[10];
+
     //set job requests
     private static Request[] setRequests = new Request[7];
     
-    //time variable (for now)
-    private static int setJobsTime = 0;
-    private static int randomJobsTime = 0;
+    // initalizing time variables 
+    private static int randJobTime = 0;
+    private static int jobTime = 0;
 
     private static Job t1 = new Job(3, "T1");
     private static Job t2 = new Job(2, "T2");
@@ -28,256 +29,260 @@ public class Driver
     {
         //initialize buffer and job requests
         setBuffer(0);
-        populateSetJobs();
-        populateJobs();
+        popSetJobs();
+        popJobs();
         
-        //start time at whatever time the first job arrives
-        setJobsTime = setRequests[0].getArrivalTime();
-        randomJobsTime = requests[0].getArrivalTime();
+        // initialize time at whatever time the first job arrives
+        jobTime = setRequests[0].getArrivalTime();
+        randJobTime = requests[0].getArrivalTime();
 
-        //set jobs
-        System.out.println("Set Jobs:");
+        // set jobs
+        System.out.println("--- Set Jobs ---");
         for(int i = 0; i < setRequests.length; i++)
         {
-            //sometimes a job will complete before the next request
-            if(setJobsTime < setRequests[i].getArrivalTime())
+            // occasionally a job will complete before the next request
+            if(jobTime < setRequests[i].getArrivalTime())
             {
-                setJobsTime = setRequests[i].getArrivalTime();
+                jobTime = setRequests[i].getArrivalTime();
             }
 
             if(setRequests[i].getJob() == 1)
             {
                 setBuffer(1);
-                System.out.print("Time: " + setJobsTime + ", " + "(" + t1.getName() + ")");
+                System.out.print("time " + jobTime + ", " + "{" + t1.getName() + "}");
                 for(int j = 0; j < buffer.length; j++)
                 {
                     System.out.print(buffer[j]);
                 }
-                System.out.print("(" + t1.getName() + ")\n");
-                setJobsTime += 3;
+                System.out.print("{" + t1.getName() + "}\n");
+                jobTime += 3;
             }
+
             else if(setRequests[i].getJob() == 2)
             {
-                //preemption
+                // preemption of jobs
                 if(i + 1 < setRequests.length)
                 {
-                    if(setRequests[i+1].getJob() == 1 && setRequests[i+1].getArrivalTime() < setJobsTime + 10)
+                    if(setRequests[i+1].getJob() == 1 && setRequests[i+1].getArrivalTime() < jobTime + 10)
                     {
-                        int preempt = setRequests[i+1].getArrivalTime() - setJobsTime;
-                        System.out.print("Time: " + setJobsTime + ", " + "(" + t2.getName() + ")");
+                        int preempt = setRequests[i+1].getArrivalTime() - jobTime;
+                        System.out.print("time " + jobTime + ", " + "{" + t2.getName() + "}");
 
                         for(int j = 0; j < preempt; j++)
                         {
                             System.out.print("N");
                         }
-                        System.out.print("(" + t2.getName() + ")\n");
+                        System.out.print(t2.getName() + "\n");
 
-                        // if the arrival time of the next job that is preempting is
-                        // sooner than the current time, preempt will be negative 
-                        // or zero.
-                        // the current job will only print its name and continue, with
-                        // no time added
+                        /*
+                         * If arrival time of next job (that will preempt) is sooner than current time
+                         * preempt will be negative value or zero
+                        */
                         if(preempt > 0)
                         {
-                            setJobsTime += preempt;
+                            jobTime += preempt;
                         }
                     }
+
                     else
                     {
-                        System.out.print("Time: " + setJobsTime + ", " + "(" + t2.getName() + ")");
+                        System.out.print("time " + jobTime + ", " + "{" + t2.getName() + "}");
                         for(int j = 0; j < 10; j++)
                         {
                             System.out.print("N");
                         }
-                        System.out.print("(" + t2.getName() + ")\n");
-                        setJobsTime += 10;
+                        System.out.print("{" + t2.getName() + "}\n");
+                        jobTime += 10;
                     }
                 }
+
                 else
                 {
-                    System.out.print("Time: " + setJobsTime + ", " + "(" + t2.getName() + ")");
+                    System.out.print("time " + jobTime + ", " + "{" + t2.getName() + "}");
                         for(int j = 0; j < 10; j++)
                         {
                             System.out.print("N");
                         }
-                        System.out.print("(" + t2.getName() + ")\n");
-                        setJobsTime += 10;
+                        System.out.print("{" + t2.getName() + "}\n");
+                        jobTime += 10;
                 }
             }
+
             else if(setRequests[i].getJob() == 3)
             {
                 setBuffer(3);
-                //preemption
+
+                // preemption of jobs
                 if(i + 1 < setRequests.length)
                 {
-                    if(setRequests[i+1].getJob() == 2 && setRequests[i+1].getArrivalTime() < setJobsTime + 3)
+                    if(setRequests[i+1].getJob() == 2 && setRequests[i+1].getArrivalTime() < jobTime + 3)
                     {
-                        int preempt = setRequests[i+1].getArrivalTime() - setJobsTime;
-                        System.out.print("Time: " + setJobsTime + ", " + "(" + t3.getName() + ")");
+                        int preempt = setRequests[i+1].getArrivalTime() - jobTime;
+                        System.out.print("time " + jobTime + ", " + "{" + t3.getName() + "}");
 
                         for(int j = 0; j < preempt; j++)
                         {
                             System.out.print(buffer[j]);
                         }
-                        System.out.print("(" + t3.getName() + ")\n");
+                        System.out.print("{" + t3.getName() + "}\n");
                         
-                        // if the arrival time of the next job that is preempting is
-                        // sooner than the current time, preempt will be negative 
-                        // or zero.
-                        // the current job will only print its name and continue, with
-                        // no time added
+                        /*
+                         * If arrival time of next job (that will preempt) is sooner than current time
+                         * preempt will be negative value or zero
+                        */
                         if(preempt > 0)
                         {
-                            setJobsTime += preempt;
+                            jobTime += preempt;
                         }
                     }
+
                     else
                     {
-                        System.out.print("Time: " + setJobsTime + ", " + "(" + t3.getName() + ")");
+                        System.out.print("time " + jobTime + ", " + "{" + t3.getName() + "}");
                         for(int j = 0; j < buffer.length; j++)
                         {
                             System.out.print(buffer[j]);
                         }
-                        System.out.print("(" + t3.getName() + ")\n");
-                        setJobsTime += 3;
+                        System.out.print("{" + t3.getName() + "}\n");
+                        jobTime += 3;
                     }
                 }
+
                 else
                 {
-                    System.out.print("Time: " + setJobsTime + ", " + "(" + t3.getName() + ")");
+                    System.out.print("time " + jobTime + ", " + "{" + t3.getName() + "}");
                         for(int j = 0; j < buffer.length; j++)
                         {
                             System.out.print(buffer[j]);
                         }
-                        System.out.print("(" + t3.getName() + ")\n");
-                        setJobsTime += 3;
+                        System.out.print("{" + t3.getName() + "}\n");
+                        jobTime += 3;
                 }
             }
         }
         System.out.println();
 
-        //random jobs
-        System.out.println("Random Jobs:");
+        // Random Jobs
+        System.out.println("--- Random Jobs ---");
         for(int i = 0; i < requests.length; i++)
         {
-            //sometimes a job will complete before the next request
-            if(randomJobsTime < requests[i].getArrivalTime())
+            // occasionally a job will complete before the next request
+            if(randJobTime < requests[i].getArrivalTime())
             {
-                randomJobsTime = requests[i].getArrivalTime();
+                randJobTime = requests[i].getArrivalTime();
             }
 
             if(requests[i].getJob() == 1)
             {
                 setBuffer(1);
-                System.out.print("Time: " + randomJobsTime + ", " + "(" + t1.getName() + ")");
+                System.out.print("time " + randJobTime + ", " + "{" + t1.getName() + "}");
                 for(int j = 0; j < buffer.length; j++)
                 {
                     System.out.print(buffer[j]);
                 }
-                System.out.print("(" + t1.getName() + ")\n");
-                randomJobsTime += 3;
+                System.out.print("{" + t1.getName() + "}\n");
+                randJobTime += 3;
             }
             else if(requests[i].getJob() == 2)
             {
-                //preemption
+                // Preemption of jobs
                 if(i + 1 < requests.length)
                 {
-                    if(requests[i+1].getJob() == 1 && requests[i+1].getArrivalTime() < randomJobsTime + 10)
+                    if(requests[i+1].getJob() == 1 && requests[i+1].getArrivalTime() < randJobTime + 10)
                     {
-                        int preempt = requests[i+1].getArrivalTime() - randomJobsTime;
-                        System.out.print("Time: " + randomJobsTime + ", " + "(" + t2.getName() + ")");
+                        int preempt = requests[i+1].getArrivalTime() - randJobTime;
+                        System.out.print("time " + randJobTime + ", " + "{" + t2.getName() + "}");
 
                         for(int j = 0; j < preempt; j++)
                         {
                             System.out.print("N");
                         }
-                        System.out.print("(" + t2.getName() + ")\n");
+                        System.out.print("{" + t2.getName() + "}\n");
 
-                        // if the arrival time of the next job that is preempting is
-                        // sooner than the current time, preempt will be negative 
-                        // or zero.
-                        // the current job will only print its name and continue, with
-                        // no time added
+                        /*
+                         * If arrival time of next job (that will preempt) is sooner than current time
+                         * preempt will be negative value or zero
+                        */
                         if(preempt > 0)
                         {
-                            randomJobsTime += preempt;
+                            randJobTime += preempt;
                         }
                     }
                     else
                     {
-                        System.out.print("Time: " + randomJobsTime + ", " + "(" + t2.getName() + ")");
+                        System.out.print("time " + randJobTime + ", " + "{" + t2.getName() + "}");
                         for(int j = 0; j < 10; j++)
                         {
                             System.out.print("N");
                         }
-                        System.out.print("(" + t2.getName() + ")\n");
-                        randomJobsTime += 10;
+                        System.out.print("{" + t2.getName() + "}\n");
+                        randJobTime += 10;
                     }
                 } 
                 else
                 {
-                    System.out.print("Time: " + randomJobsTime + ", " + "(" + t2.getName() + ")");
+                    System.out.print("time " + randJobTime + ", " + "{" + t2.getName() + "}");
                         for(int j = 0; j < 10; j++)
                         {
                             System.out.print("N");
                         }
-                        System.out.print("(" + t2.getName() + ")\n");
-                        randomJobsTime += 10;
+                        System.out.print("{" + t2.getName() + "}\n");
+                        randJobTime += 10;
                 }
             }
             else if(requests[i].getJob() == 3)
             {
                 setBuffer(3);
-                //preemption
+
+                // preemption of jobs
                 if(i + 1 < requests.length)
                 {
-                    if(requests[i+1].getJob() == 2 && requests[i+1].getArrivalTime() < randomJobsTime + 3)
+                    if(requests[i+1].getJob() == 2 && requests[i+1].getArrivalTime() < randJobTime + 3)
                     {
-                        int preempt = requests[i+1].getArrivalTime() - randomJobsTime;
-                        System.out.print("Time: " + randomJobsTime + ", " + "(" + t3.getName() + ")");
+                        int preempt = requests[i+1].getArrivalTime() - randJobTime;
+                        System.out.print("time " + randJobTime + ", " + "{" + t3.getName() + "}");
                         
                         for(int j = 0; j < preempt; j++)
                         {
                             System.out.print(buffer[j]);
                         }
-                        System.out.print("(" + t3.getName() + ")\n");
+                        System.out.print("{" + t3.getName() + "}\n");
 
-                        // if the arrival time of the next job that is preempting is
-                        // sooner than the current time, preempt will be negative 
-                        // or zero.
-                        // the current job will only print its name and continue, with
-                        // no time added
+                        /*
+                         * If arrival time of next job (that will preempt) is sooner than current time
+                         * preempt will be negative value or zero
+                        */
                         if(preempt > 0)
                         {
-                            randomJobsTime += preempt;
+                            randJobTime += preempt;
                         }
                     }
                     else
                     {
-                        System.out.print("Time: " + randomJobsTime + ", " + "(" + t3.getName() + ")");
+                        System.out.print("time " + randJobTime + ", " + "{" + t3.getName() + "}");
                         for(int j = 0; j < buffer.length; j++)
                         {
                             System.out.print(buffer[j]);
                         }
-                        System.out.print("(" + t3.getName() + ")\n");
-                        randomJobsTime += 3;
+                        System.out.print("{" + t3.getName() + "}\n");
+                        randJobTime += 3;
                     }
                 }
                 else
                 {
-                    System.out.print("Time: " + randomJobsTime + ", " + "(" + t3.getName() + ")");
+                    System.out.print("time " + randJobTime + ", " + "{" + t3.getName() + "}");
                         for(int j = 0; j < buffer.length; j++)
                         {
                             System.out.print(buffer[j]);
                         }
-                        System.out.print("(" + t3.getName() + ")\n");
-                        randomJobsTime += 3;
+                        System.out.print("{" + t3.getName() + "}\n");
+                        randJobTime += 3;
                 }
             }
         }
     }
 
-    //helper method to set values in the buffer
+    // method to set values in buffer
     public static void setBuffer(int value)
     {
         for(int i = 0; i < buffer.length; i++)
@@ -286,19 +291,20 @@ public class Driver
         }
     }
 
-    //herlper method to add job requests to the job array and sort the array
-    public static void populateJobs()
+    // method to add job requests to job array and sort
+    public static void popJobs()
     {
-        //requests will be populated with random values
+        // requests populated with random values
         for(int i = 0; i < requests.length; i++)
         {
             requests[i] = new Request();
         }
 
-        System.out.println("Random Jobs:");
-        System.out.println("Before sorting: ");
+        System.out.println("--- Random Jobs ---");
+        System.out.print("Before sorting: ");
         printJobs(requests);
-        //requests will then be sorted by time
+
+        // requests sorted by time
         for(int i = 0; i < requests.length; i++)
         {
             for(int j =  i + 1; j < requests.length; j++)
@@ -312,13 +318,14 @@ public class Driver
                 }
             }
         }
-        System.out.println("After sorting: ");
+        System.out.print("After sorting:  ");
         printJobs(requests);
         System.out.println();
     }
 
-    public static void populateSetJobs()
+    public static void popSetJobs()
     {
+        // setting the given request from the assignment directions
         setRequests[0] = new Request(1, 3);
         setRequests[1] = new Request(3, 2);
         setRequests[2] = new Request(6, 3);
@@ -326,19 +333,20 @@ public class Driver
         setRequests[4] = new Request(10, 2);
         setRequests[5] = new Request(12, 3);
         setRequests[6] = new Request(26, 1);
-        System.out.println("Set Jobs:");
+
+        System.out.println("--- Set Jobs ---");
         printJobs(setRequests);
         System.out.println();
     }
 
-    //helper method to print the job queue
+    // method to print the jobs
     public static void printJobs(Request[] jobs)
     {
         System.out.print("[");
         for(int i = 0; i < jobs.length; i++)
         {
             System.out.print(jobs[i].getArrivalTime());
-            System.out.print("(" + jobs[i].getJob() + ")");
+            System.out.print("{" + jobs[i].getJob() + "}");
             if(i != jobs.length - 1)
             {
                 System.out.print(", ");
